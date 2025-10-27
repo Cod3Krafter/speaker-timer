@@ -8,6 +8,8 @@ import { TimerDisplay } from './components/TimerDisplay';
 import { TimerControls } from './components/TimerControls';
 import { PublicDisplay } from './components/public-display';
 import { openPublicDisplay, isTauri } from './utils/tauriWindows';
+import { useSyncStore } from './hooks/useSyncStore';
+
 
 // Create a broadcast channel for cross-tab/window communication
 const timerChannel = new BroadcastChannel('speaker-timer');
@@ -35,6 +37,24 @@ function App({ defaultView = 'control' }: AppProps) {
   const [editingSpeaker, setEditingSpeaker] = useState<Speaker | null>(null);
   const [viewMode] = useState<ViewMode>(defaultView);
   const [displayTime, setDisplayTime] = useState(timeRemaining);
+
+  useSyncStore('speaker-storage', () => {
+    useSpeakerStore.persist.rehydrate();
+  });
+  
+  // Force re-read current speaker when sync happens
+  const [, forceUpdate] = useState(0);
+  
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'speaker-storage' && viewMode === 'display') {
+        forceUpdate(n => n + 1);
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [viewMode]);
   
   const currentSpeaker = getCurrentSpeaker();
   const isInitialMount = useRef(true);
@@ -174,6 +194,8 @@ function App({ defaultView = 'control' }: AppProps) {
       </div>
     );
   }
+
+
 
 
   // Control View
