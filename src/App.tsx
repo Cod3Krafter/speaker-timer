@@ -7,10 +7,10 @@ import type {Speaker} from './store/useSpeakerStore';
 import { TimerDisplay } from './components/TimerDisplay';
 import { TimerControls } from './components/TimerControls';
 import { PublicDisplay } from './components/public-display';
+import { openPublicDisplay, isTauri } from './utils/tauriWindows';
 
-// Create a broadcast channel for cross-tab communication
+// Create a broadcast channel for cross-tab/window communication
 const timerChannel = new BroadcastChannel('speaker-timer');
-
 
 type ViewMode = 'control' | 'display';
 interface AppProps {
@@ -33,7 +33,7 @@ function App({ defaultView = 'control' }: AppProps) {
   } = useTimerStore();
   
   const [editingSpeaker, setEditingSpeaker] = useState<Speaker | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>(defaultView);
+  const [viewMode] = useState<ViewMode>(defaultView);
   const [displayTime, setDisplayTime] = useState(timeRemaining);
   
   const currentSpeaker = getCurrentSpeaker();
@@ -69,6 +69,23 @@ function App({ defaultView = 'control' }: AppProps) {
       timerChannel.removeEventListener('message', handleMessage);
     };
   }, [viewMode, loadSpeakerDuration]);
+
+  // Listen for localStorage changes (works in both browser tabs and Tauri windows)
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      // Storage event will trigger Zustand to re-hydrate automatically
+      // Force a recalculation of display time
+      if (e.key === 'timer-storage' || e.key === 'speaker-storage') {
+        const currentTime = calculateTimeRemaining();
+        setDisplayTime(currentTime);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [calculateTimeRemaining]);
 
   // Broadcast updates from control view
   useEffect(() => {
@@ -109,7 +126,6 @@ function App({ defaultView = 'control' }: AppProps) {
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
 
-    
     if (timerStatus === 'running') {
       interval = setInterval(() => {
         tick();
@@ -121,25 +137,30 @@ function App({ defaultView = 'control' }: AppProps) {
     };
   }, [timerStatus, tick]);
 
-  // No alert needed for time exceeded, timer continues into negative
-
-// Load speaker duration when current speaker changes
   // Load speaker duration when current speaker changes
-useEffect(() => {
-  // Skip on initial mount (page refresh)
-  if (isInitialMount.current) {
-    isInitialMount.current = false;
-    return;
-  }
+  useEffect(() => {
+    // Skip on initial mount (page refresh)
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
 
-  if (currentSpeaker && timerStatus === 'idle') {
-    loadSpeakerDuration(currentSpeaker.duration);
-  }
-}, [currentSpeaker, timerStatus, loadSpeakerDuration]); // Only trigger when speaker ID changes, not on every render
+    if (currentSpeaker && timerStatus === 'idle') {
+      loadSpeakerDuration(currentSpeaker.duration);
+    }
+  }, [currentSpeaker, timerStatus, loadSpeakerDuration]);
 
   const handleLoadNextSpeaker = () => {
     loadNextSpeaker();
   };
+
+  const handleOpenDisplay = () => {
+  if (isTauri) {
+    openPublicDisplay();
+  } else {
+    window.open('/display', '_blank');
+  }
+};
 
   // Display View
   if (viewMode === 'display') {
@@ -154,6 +175,7 @@ useEffect(() => {
     );
   }
 
+
   // Control View
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-4 md:p-8">
@@ -163,10 +185,13 @@ useEffect(() => {
             <h1 className="text-4xl font-bold text-gray-800 mb-2">
               Speaker Timer Control
             </h1>
+            {isTauri && (
+              <p className="text-sm text-gray-500">Running in Tauri Desktop App</p>
+            )}
           </div>
           <button
             type="button"
-            onClick={() => window.open('/display', '_blank')}
+            onClick={handleOpenDisplay}
             className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors flex items-center gap-2 shadow-lg"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

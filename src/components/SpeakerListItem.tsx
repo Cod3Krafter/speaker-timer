@@ -13,7 +13,6 @@ interface SpeakerListItemProps {
 
 export function SpeakerListItem({
   speaker,
-  index,
   isActive,
   onEdit,
   onDelete,
