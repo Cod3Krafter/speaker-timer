@@ -1,0 +1,28 @@
+## Project Structure
+
+```
+speaker-timer/
+├── src/
+│   ├── components/      # React components
+│   ├── store/          # Zustand state management
+│   ├── utils/          # Helper functions
+│   └── App.tsx         # Main application
+├── public/             # Static assets
+└── index.html          # Entry point
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+## Acknowledgments
+
+- Built with [React](https://react.dev/)
+- Styled with [Tailwind CSS](https://tailwindcss.com/)
+- Drag & Drop powered by [@dnd-kit](https://dndkit.com/)

@@ -1,73 +1,101 @@
-# React + TypeScript + Vite
+# Speaker Timer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, real-time speaker timer application built with React, TypeScript, and Tailwind CSS. Perfect for managing speaking events, presentations, and conferences.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🎯 **Real-time Timer Display**
+  - Countdown timer with millisecond precision
+  - Smooth color transitions as time approaches zero
+  - Continues into negative time with visual indicators
+  - Synchronized display across multiple tabs/windows
 
-## React Compiler
+- 👥 **Speaker Management**
+  - Add, edit, and remove speakers
+  - Set custom duration for each speaker
+  - Drag-and-drop queue reordering
+  - Speaker name and topic display
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 🎮 **Timer Controls**
+  - Start/Pause/Resume functionality
+  - Reset timer option
+  - Load next speaker automatically
+  - Persistent state across page refreshes
 
-## Expanding the ESLint configuration
+- 📺 **Display View**
+  - Separate display window for presenters
+  - Real-time synchronization with control panel
+  - Clean, distraction-free interface
+  - Color-coded time remaining indicators
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Technology Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Frontend Framework**: React with TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand
+- **Routing**: React Router
+- **Drag & Drop**: @dnd-kit
+- **Build Tool**: Vite
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Prerequisites
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Node.js (v18 or higher)
+- pnpm (v8 or higher)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Installation
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Cod3Krafter/speaker-timer.git
+   cd speaker-timer
+   ```
+
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+
+3. Start the development server:
+   ```bash
+   pnpm dev
+   ```
+
+4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## Usage
+
+### Managing Speakers
+
+1. **Adding a Speaker**
+   - Fill out the speaker form with name, topic, and duration
+   - Click "Add Speaker" to add them to the queue
+
+2. **Editing Speakers**
+   - Click the "Edit" button on any speaker card
+   - Modify the details in the form
+   - Click "Update Speaker" to save changes
+
+3. **Reordering Speakers**
+   - Use the drag handle (⋮⋮) to grab a speaker card
+   - Drag up or down to reposition in the queue
+   - Release to drop in the new position
+
+### Using the Timer
+
+1. **Starting a Session**
+   - Load a speaker from the queue
+   - Click the "Start" button to begin countdown
+   - Timer will change color as time reduces
+
+2. **Display View**
+   - Click "Open Display View" to open presenter display
+   - Position on a secondary screen if needed
+   - Display automatically syncs with control panel
+
+3. **Timer Controls**
+   - Use Start/Pause/Resume as needed
+   - Reset timer resets to original duration
+   - Load next speaker when current presentation ends
 ```
