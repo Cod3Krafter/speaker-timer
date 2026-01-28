@@ -204,22 +204,22 @@ function App({ defaultView = 'control' }: AppProps) {
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-8 flex justify-between items-start">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:justify-between md:items-start">
           <div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
               Speaker Timer Control
             </h1>
             {isTauri && (
               <p className="text-sm text-gray-500">Running in Tauri Desktop App</p>
             )}
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 items-center">
             {!isTauri && (
               <a
                 href="https://github.com/nicholasadamou/speaker-timer/releases/latest"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-900 transition-colors flex items-center gap-2 shadow-lg"
+                className="bg-gray-800 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg font-semibold hover:bg-gray-900 transition-colors flex items-center justify-center gap-2 shadow-lg text-sm md:text-base whitespace-nowrap w-fit"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -230,13 +230,10 @@ function App({ defaultView = 'control' }: AppProps) {
             <button
               type="button"
               onClick={handleOpenDisplay}
-              className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors flex items-center gap-2 shadow-lg"
+              className="bg-purple-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 shadow-lg text-sm md:text-base whitespace-nowrap w-fit"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
               </svg>
               Open Display View
             </button>
