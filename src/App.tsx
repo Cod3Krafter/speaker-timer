@@ -216,7 +216,7 @@ function App({ defaultView = 'control' }: AppProps) {
           <div className="flex flex-col sm:flex-row gap-3 items-center">
             {!isTauri && (
               <a
-                href="https://github.com/nicholasadamou/speaker-timer/releases/latest"
+                href="https://github.com/Cod3Krafter/speaker-timer/releases/latest"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gray-800 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg font-semibold hover:bg-gray-900 transition-colors flex items-center justify-center gap-2 shadow-lg text-sm md:text-base whitespace-nowrap w-fit"
